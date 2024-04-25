@@ -1,0 +1,1 @@
+# architecture-node-mongoose-aws
