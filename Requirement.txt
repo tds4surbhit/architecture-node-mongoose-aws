@@ -1,0 +1,5 @@
+Schema - Define the Schema
+Schema - Model 
+
+Using Model -- we do crud operations
+create read update delete 
