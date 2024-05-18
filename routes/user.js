@@ -1,34 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user");
-
-router.get("/", async (req, res) => {
-  const allDbUsers = await User.find({});
-  return res.status(200).json(allDbUsers);
-});
+const controller = require("../controllers/user");
 
 router
-  .get("/:id", async (req, res) => {
-    const userDetails = await User.findById(req.params.id);
-    if (!userDetails) return res.status(404).json({ error: "User Not Found" });
-    return res.json(userDetails);
-  })
-  .patch(async (req, res) => {
-    await User.findByIdAndUpdate(req.params.id, { lastName: "New Last name" });
-  })
-  .delete(async (req, res) => {
-    await User.findByIdAndDelete(req.params.id);
-  });
+  .route("/")
+  .get(controller.handleGetAllUsers) // Pass the function reference
+  .post(controller.handleCreateNewUser); // Pass the function reference
 
-router.post("/", async (req, res) => {
-  const body = req.body;
-  const result = await User.create({
-    firstName: body.firstName,
-    lastName: body.lastName,
-    email: body.email,
-    jobTitle: body.jobTitle,
-    gender: body.gender,
-  });
-  console.log("Result", result);
-  return res.status(200).json({ msg: "Success" });
-});
+router
+  .route("/:id")
+  .get(controller.handlegetUserById) // Pass the function reference
+  .patch(controller.handleUpdateUserById) // Pass the function reference
+  .delete(controller.deleteUserById); // Pass the function reference
+
+module.exports = router;
